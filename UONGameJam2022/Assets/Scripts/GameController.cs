@@ -8,11 +8,14 @@ public class GameController : MonoBehaviour
     public static GameController instance;
     PlayerInputManager playerInputManager;
 
-    public List<Player> Players { get; set; }
+    [SerializeField] public List<PlayerController> Players;
     private int maxPlayers = 2;
     private int nextIndex = 1;
 
     private bool hasStarted = false;
+
+    [SerializeField] public Transform[] bottomPlayer;
+    [SerializeField] public Transform[] topPlayer;
 
     private void Awake()
     {
@@ -28,20 +31,25 @@ public class GameController : MonoBehaviour
         }
         #endregion
 
-        playerInputManager = GetComponent<PlayerInputManager>();
-        Players = new List<Player>(2);
-    }
-
-    public void PlayerJoined(PlayerInput input)
-    {
-        Player player = input.gameObject.GetComponent<Player>();
-        player.ID = nextIndex;
-        player.Score = 0;
+        Players = new List<PlayerController>(2);
     }
 
     private void Start()
     {
+        playerInputManager = GetComponent<PlayerInputManager>();
+
         StartCoroutine(WaitingForPlayers());
+    }
+    public void onPlayerJoined(PlayerInput input)
+    {
+       
+        GameObject player = input.gameObject;
+        Debug.Log("Player joined called, " + player.name + ". ID: " + input.playerIndex);
+
+        PlayerController pc = player.GetComponent<PlayerController>();
+        pc.ID = nextIndex++;
+        pc.Score = 0;
+        Players.Add(pc);
     }
 
     public void ScorePlayer(int index)
@@ -51,16 +59,34 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-        foreach(Player player in Players)
+        Debug.Log("starting game");
+
+        for (int i = 0; i < 2; i++)
         {
+            Debug.Log("pawn spawn");
+
+            if (i == 0)
+            {
+                Players[i].rails = bottomPlayer;
+            }
+            else
+            {
+                Players[i].rails = topPlayer;
+            }
+
+            Players[i].InitPawn();
         }
     }
 
     IEnumerator WaitingForPlayers()
     {
-        if (Players.Count != 2)
-            yield return new WaitForSeconds(0.5f);
+        while (Players.Count < 2)
+        {
+            Debug.Log("Waiting for players");
+            yield return new WaitForSeconds(2f);
+        }
 
+        yield return new WaitForSeconds(1f);
         StartGame();
     }
 }

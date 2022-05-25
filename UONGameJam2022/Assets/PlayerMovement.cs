@@ -5,10 +5,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    MasterInput input;
+    PlayerInput input;
+    private InputActionMap iaa;
 
     public Transform[] railPositions;
-    private int railIndex;
+    private int railIndex = 1;
 
     [SerializeField] private float swapRailDuration;
     private Vector3 origin;
@@ -18,10 +19,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        input = transform.parent.GetComponent<MasterInput>();
-
-        input.Gameplay.Left.performed += Left;
-        input.Gameplay.Right.performed += Right;
+        input = transform.parent.GetComponent<PlayerInput>();
+        iaa = input.actions.FindActionMap("Gameplay");
+        iaa.FindAction("Left").performed += Left;
+        iaa.FindAction("Right").performed += Right;
     }
 
     private void Left(InputAction.CallbackContext context)
@@ -65,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 moving = false;
+                t = 0;
             }
         }
     }
