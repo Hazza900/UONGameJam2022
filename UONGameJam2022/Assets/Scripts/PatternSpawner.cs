@@ -74,6 +74,11 @@ public class PatternSpawner : MonoBehaviour
             //  FirstSpawner.Spawn(pattern[index] & 4 > 0); // returns true if needs to spawn, false if not
             //  SecondSpawner.Spawn(pattern[index] & 2 > 0); // returns true if needs to spawn, false if not
             //  ThirdSpawner.Spawn(pattern[index] & 1 > 0); // returns true if needs to spawn, false if not
+            
+            // can be done like this too
+            // if(pattern[index] & 4 > 0) FirstSpawner.Spawn();
+            // if(pattern[index] & 2 > 0) SecondSpawner.Spawn();
+            // if(pattern[index] & 1 > 0) ThirdSpawner.Spawn();
 
             index++;
 
