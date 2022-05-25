@@ -6,10 +6,18 @@ public class PatternSpawner : MonoBehaviour
 {
 
     [SerializeField]
-    private float[][] _patterns = {{1,2,4,3,5}, {6, 5, 3, 5, 6}, {5, 4, 2, 1, 6}};
+    private float _spawnDelay = 0.7f;
 
     [SerializeField]
-    private float _spawnDelay = 0.7f;
+    private Pattern[] _patterns = new Pattern[]{
+        new Pattern(new int[] {1, 2, 4, 3, 5}), 
+        new Pattern(new int[] {6, 5, 3, 5, 6}), 
+        new Pattern(new int[] {5, 4, 2, 1, 6})
+    };
+
+    
+
+
     /*
 
 
@@ -55,10 +63,10 @@ public class PatternSpawner : MonoBehaviour
 
     private IEnumerator Spawn(){
         var wait = new WaitForSeconds(_spawnDelay);
-        var pattern = _patterns[Random.Range(0, _patterns.length)];
+        var pattern = _patterns[Random.Range(0, _patterns.Length)].data;
 
         int index = 0;
-        while(index < pattern.length){
+        while(index < pattern.Length){
             yield return wait;
             // counting first sapwner as most left one
             // 3rd spawner would be right most one
@@ -66,7 +74,7 @@ public class PatternSpawner : MonoBehaviour
             //  FirstSpawner.Spawn(pattern[index] & 4 > 0); // returns true if needs to spawn, false if not
             //  SecondSpawner.Spawn(pattern[index] & 2 > 0); // returns true if needs to spawn, false if not
             //  ThirdSpawner.Spawn(pattern[index] & 1 > 0); // returns true if needs to spawn, false if not
-            
+
             index++;
 
         }
@@ -75,9 +83,14 @@ public class PatternSpawner : MonoBehaviour
     }
 
 
+}
 
+[System.Serializable]
+public class Pattern
+{
+    public int[] data;
 
-
-
-
+    public Pattern (int[] input){
+        data = input;
+    }
 }
