@@ -10,6 +10,9 @@ public class GameController : MonoBehaviour
 
     public List<Player> Players { get; set; }
     private int maxPlayers = 2;
+    private int nextIndex = 1;
+
+    private bool hasStarted = false;
 
     private void Awake()
     {
@@ -29,19 +32,35 @@ public class GameController : MonoBehaviour
         Players = new List<Player>(2);
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void PlayerJoined(PlayerInput input)
     {
-        
+        Player player = input.gameObject.GetComponent<Player>();
+        player.ID = nextIndex;
+        player.Score = 0;
     }
 
-    public void PlayerJoinedEvent(PlayerInput pi)
+    private void Start()
     {
-        
+        StartCoroutine(WaitingForPlayers());
     }
 
-    public void PlayerLeftEvent()
+    public void ScorePlayer(int index)
     {
+        Players[index].Score++;
+    }
 
+    private void StartGame()
+    {
+        foreach(Player player in Players)
+        {
+        }
+    }
+
+    IEnumerator WaitingForPlayers()
+    {
+        if (Players.Count != 2)
+            yield return new WaitForSeconds(0.5f);
+
+        StartGame();
     }
 }

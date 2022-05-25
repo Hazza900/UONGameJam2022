@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-    public int ID { get; }
+    public int ID { get; set; }
     public int Score { get; set; }
+
 }
