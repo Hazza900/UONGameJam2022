@@ -550,6 +550,7 @@ Transform:
   - {fileID: 205174155}
   - {fileID: 423907711}
   - {fileID: 1717516439}
+  - {fileID: 696552889}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1059,6 +1060,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3818f7bc601957a4cbfa5ea76f06d717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnLeft: {fileID: 68161159}
+  _spawnCenter: {fileID: 1988371763}
+  _spawnRight: {fileID: 1361727167}
+  _obstacle: {fileID: 0}
+  _spawnUp: 0
+  _spawnDown: 1
   _spawnDelay: 0.7
   _patterns:
   - data: 0100000002000000040000000300000005000000
@@ -1071,13 +1078,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696552887}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27776405, y: -0.30335185, z: -0.15399712}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 170600379}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &758905767
 GameObject:
