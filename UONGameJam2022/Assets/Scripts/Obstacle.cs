@@ -11,6 +11,11 @@ public class Obstacle : MonoBehaviour
     private bool _isGoingDown = true;
 
 
+    public void AdjustSpeed(float diff)
+    {
+        _speed += diff;
+    }
+
     public void SetDirectionUp()
     {
         _isGoingDown = false;

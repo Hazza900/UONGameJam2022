@@ -27,7 +27,9 @@ public class PatternSpawner : MonoBehaviour
     private bool _spawnDown = true;
 
     [SerializeField]
-    private float _spawnDelay = 0.7f;
+    private float _spawnDelay = 0.5f;
+
+    private float _obstacleSpeedDiff = 0;
 
     [SerializeField]
     private Pattern[] _patterns = new Pattern[]{
@@ -41,8 +43,6 @@ public class PatternSpawner : MonoBehaviour
 
     /*
 
-
-    idea?    always insert 0 - layout at the start of pattern?
     pattern explanation
     ***** 0 - empty
     ***** x - obstacle
@@ -56,10 +56,6 @@ public class PatternSpawner : MonoBehaviour
     6 - x x 0
     */
 
-
-    // not sure how spawning works for now, but I thought we'd have 3 spawners,
-    // so I'll have it in a way that it returns array of 3 bools, one for each lane to determine if an obstacle needs to be spawned
-    // maybe have a reference to 3 spawners that can be called individually and call them from here
 
     public static PatternSpawner Instance = null;
 
@@ -116,7 +112,14 @@ public class PatternSpawner : MonoBehaviour
                 index++;
 
             }
+            // have one cycle of rest random?
+            if (Random.Range(0, 3) == 2)
+            {
+                yield return wait;
+            }
 
+            _spawnDelay += 0.02f;
+            _obstacleSpeedDiff += 1f;
         }
     }
 
@@ -125,14 +128,16 @@ public class PatternSpawner : MonoBehaviour
         if (_spawnDown)
         {
             var obstacle = Instantiate(_obstacle, transform);
+            obstacle.GetComponent<Obstacle>().AdjustSpeed(_obstacleSpeedDiff);
             obstacle.transform.position = spawnerPosition.position;
 
         }
         if (_spawnUp)
         {
             var obstacle = Instantiate(_obstacle, transform);
-            obstacle.transform.position = spawnerPosition.position;
+            obstacle.GetComponent<Obstacle>().AdjustSpeed(_obstacleSpeedDiff);
             obstacle.GetComponent<Obstacle>().SetDirectionUp();
+            obstacle.transform.position = spawnerPosition.position;
         }
 
     }
