@@ -2622,7 +2622,7 @@ PrefabInstance:
       objectReference: {fileID: 36739609}
     - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
       propertyPath: gameLength
-      value: 5
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
       propertyPath: secretTime
