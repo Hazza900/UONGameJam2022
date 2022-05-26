@@ -2,20 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
     public static GameController instance;
-    PlayerInputManager playerInputManager;
+    public PlayerInputManager playerInputManager;
+    public MenuController mc;
+    public PatternSpawner ps;
 
-    [SerializeField] public List<PlayerController> Players;
+    public List<PlayerController> Players;
     private int maxPlayers = 2;
     private int nextIndex = 1;
 
     private bool hasStarted = false;
+    private bool hasEnded = false;
 
     [SerializeField] public Transform[] bottomPlayer;
     [SerializeField] public Transform[] topPlayer;
+
+    [SerializeField] private float gameLength;
+    [SerializeField] private float secretTime;
 
     private void Awake()
     {
@@ -24,10 +31,6 @@ public class GameController : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
             instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
         }
         #endregion
 
@@ -38,11 +41,11 @@ public class GameController : MonoBehaviour
     {
         playerInputManager = GetComponent<PlayerInputManager>();
 
-        StartCoroutine(WaitingForPlayers());
+        StartCoroutine(GameLoad());
+        
     }
     public void onPlayerJoined(PlayerInput input)
     {
-       
         GameObject player = input.gameObject;
         Debug.Log("Player joined called, " + player.name + ". ID: " + input.playerIndex);
 
@@ -57,25 +60,21 @@ public class GameController : MonoBehaviour
         Players[index].Score++;
     }
 
-    private void StartGame()
+    public void Update()
     {
-        Debug.Log("starting game");
-
-        for (int i = 0; i < 2; i++)
+        if (hasStarted)
         {
-            Debug.Log("pawn spawn");
-
-            if (i == 0)
-            {
-                Players[i].rails = bottomPlayer;
-            }
-            else
-            {
-                Players[i].rails = topPlayer;
-            }
-
-            Players[i].InitPawn();
+            mc.player1score.text = Players[0].Score.ToString();
+            mc.player2score.text = Players[1].Score.ToString();
         }
+    }
+
+    IEnumerator GameLoad()
+    {
+        yield return new WaitForSeconds(3);
+        mc.logoScreen.SetActive(false);
+        playerInputManager.EnableJoining();
+        StartCoroutine(WaitingForPlayers());
     }
 
     IEnumerator WaitingForPlayers()
@@ -86,7 +85,89 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
 
+        mc.waitScreen.SetActive(false);
+
+        Debug.Log("Displaying Names");
+
+        mc.player1text.text = Players[0].GetComponent<PlayerInput>().devices[0].displayName.Substring(0, 4);
+        mc.player2text.text = Players[1].GetComponent<PlayerInput>().devices[0].displayName.Substring(0, 4);
+        yield return new WaitForSeconds(4f);
+        mc.player1.SetActive(false);
+        mc.player2.SetActive(false);
+
+        StartCoroutine(StartGame());
+    }
+
+    IEnumerator StartGame()
+    {
+        Debug.Log("Starting Game!");
+
+        Players[0].rails = bottomPlayer;
+        Players[0].InitPawn();
+        Players[1].rails = topPlayer;
+        Players[1].InitPawn();
+
+        Debug.Log("Players Spawned, Beginning Countdown...");
+
         yield return new WaitForSeconds(1f);
-        StartGame();
+
+        ps.StartSpawn();
+        StartCoroutine(GameTimer());
+    }
+
+    IEnumerator GameTimer()
+    {
+        hasStarted = true;
+        yield return new WaitForSeconds(gameLength);
+
+        //block score
+        mc.finalTimer.SetActive(true);
+
+        mc.finalTimerText.text = secretTime.ToString();
+        while (secretTime > 0)
+        {
+            yield return new WaitForSeconds(1);
+            secretTime--;
+            mc.finalTimerText.text = secretTime.ToString();
+        }
+
+        foreach (PlayerController player in Players)
+        {
+            player.GetComponent<PlayerInput>().DeactivateInput();
+            player.immune = true;
+        }
+
+        ps.StopSpawn();
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+        foreach (GameObject enemy in enemies)
+        {
+            Destroy(enemy);
+        }
+
+        yield return new WaitForSeconds(1);
+        mc.finalTimerText.text = "";
+
+        for (int i=0; i<5; i++)
+        {
+            yield return new WaitForSeconds(0.75f);
+            mc.finalTimerText.text += ".";
+        }
+
+        mc.finalTimer.SetActive(false);
+
+        int p1 = Players[0].Score;
+        int p2 = Players[1].Score;
+
+        if (p1 > p2)
+        {
+            mc.bluewins.SetActive(true);
+        }
+        else
+        {
+            mc.redwins.SetActive(true);
+        }
+
+        yield return new WaitForSeconds(5f);
+        hasEnded = true;
     }
 }

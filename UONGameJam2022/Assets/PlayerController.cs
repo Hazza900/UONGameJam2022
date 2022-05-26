@@ -7,13 +7,11 @@ public class PlayerController : MonoBehaviour
     public int ID { get; set; }
     public int Score { get; set; }
 
+    public bool Ready { get; set; }
+    public bool immune;
+
     public GameObject prefab;
     public Transform[] rails;
-
-    public void Start()
-    {
-        
-    }
 
     public void InitPawn()
     {

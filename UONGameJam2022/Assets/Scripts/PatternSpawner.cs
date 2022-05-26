@@ -27,6 +27,9 @@ public class PatternSpawner : MonoBehaviour
     private bool _spawnDown = true;
 
     [SerializeField]
+    public bool active = true;
+
+    [SerializeField]
     private float _spawnDelay = 0.5f;
 
     private float _obstacleSpeedDiff = 0;
@@ -55,7 +58,7 @@ public class PatternSpawner : MonoBehaviour
     5 - x 0 x
     6 - x x 0
     */
-
+    Coroutine crt;
 
     public static PatternSpawner Instance = null;
 
@@ -66,14 +69,18 @@ public class PatternSpawner : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        Instance = this;
         DontDestroyOnLoad(gameObject);
-        StartSpawn();
+        Instance = this;
     }
 
     public void StartSpawn()
     {
-        StartCoroutine(SpawnLoop());
+        crt = StartCoroutine(SpawnLoop());
+    }
+
+    public void StopSpawn()
+    {
+        StopCoroutine(crt);
     }
 
     public void AdjustSpawnDelay(float value)

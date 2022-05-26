@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerCollision : MonoBehaviour
 {
     private PlayerController controller;
+    [SerializeField] private float iframetime;
 
     private void Start()
     {
@@ -13,16 +14,23 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-       if (controller.ID == 1)
-       {
-           GameController.instance.ScorePlayer(2);
-       }
-       else
-       {
-           GameController.instance.ScorePlayer(1);
-       }
+        if (controller.immune)
+            return;
 
-        
-        //reduce score by one, give iframes
+        if (controller.ID == 1)
+        {
+            GameController.instance.ScorePlayer(1);
+        }
+        else
+        {
+            GameController.instance.ScorePlayer(0);
+        }
+    }
+
+    IEnumerator recovery()
+    {
+        controller.immune = true;
+        yield return new WaitForSeconds(iframetime);
+        controller.immune = false;
     }
 }
