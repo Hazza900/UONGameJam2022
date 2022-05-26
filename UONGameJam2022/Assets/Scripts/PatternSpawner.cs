@@ -30,7 +30,9 @@ public class PatternSpawner : MonoBehaviour
     public bool active = true;
 
     [SerializeField]
-    private float _spawnDelay = 0.5f;
+    private float _spawnDelayDefault = 0.5f;
+
+    private float _spawnDelay;
 
     private float _obstacleSpeedDiff = 0;
 
@@ -64,6 +66,7 @@ public class PatternSpawner : MonoBehaviour
 
     private void Awake()
     {
+        _spawnDelay = _spawnDelayDefault;
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -82,7 +85,7 @@ public class PatternSpawner : MonoBehaviour
     {
         StopCoroutine(crt);
         _obstacleSpeedDiff = 0f;
-        _spawnDelay = 0.5f;
+        _spawnDelay = _spawnDelayDefault;
     }
 
     public void AdjustSpawnDelay(float value)
