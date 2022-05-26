@@ -5,6 +5,10 @@ using UnityEngine;
 public class Obstacle : MonoBehaviour
 {
 
+
+    [SerializeField]
+    private float _maxSpeed = 9.4f;
+
     [SerializeField]
     private float _speed = 5f;
 
@@ -14,6 +18,10 @@ public class Obstacle : MonoBehaviour
     public void AdjustSpeed(float diff)
     {
         _speed += diff;
+        if (_speed > _maxSpeed)
+        {
+            _speed = _maxSpeed;
+        }
     }
 
     public void SetDirectionUp()
