@@ -159,11 +159,16 @@ MonoBehaviour:
   _spawnUp: 1
   _spawnDown: 1
   active: 1
-  _spawnDelay: 0.5
+  _spawnDelayDefault: 0.5
+  _spawnDelayChange: -0.01
+  _obstacleSpeedChange: 0.7
   _patterns:
   - data: 0100000002000000040000000300000005000000
   - data: 0600000005000000030000000500000006000000
   - data: 0500000004000000020000000100000006000000
+  - data: 05000000050000000400000006000000060000000600000004000000010000000300000003000000030000000100000004000000060000000400000005000000
+  - data: 0500000004000000060000000400000005000000030000000000000006000000
+  - data: 02000000010000000200000004000000020000000100000003000000040000000200000001000000
 --- !u!4 &36739610
 Transform:
   m_ObjectHideFlags: 0
@@ -1165,7 +1170,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: BLUE
+  m_text: BOTTOM
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1340,7 +1345,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: RED
+  m_text: TOP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3488,7 +3493,7 @@ PrefabInstance:
       objectReference: {fileID: 36739609}
     - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
       propertyPath: gameLength
-      value: 20
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
       propertyPath: secretTime
@@ -3502,6 +3507,10 @@ PrefabInstance:
       propertyPath: _restartButton
       value: 
       objectReference: {fileID: 66397386}
+    - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
+      propertyPath: defaultSecretTime
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8199535238545842768, guid: 7f73336cbf17fde49bc794859ca2245c, type: 3}
       propertyPath: topPlayer.Array.data[0]
       value: 

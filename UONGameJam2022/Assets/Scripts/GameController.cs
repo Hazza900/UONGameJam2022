@@ -25,7 +25,8 @@ public class GameController : MonoBehaviour
     [SerializeField] public Transform[] topPlayer;
 
     [SerializeField] private float gameLength;
-    [SerializeField] private float secretTime;
+    [SerializeField] private float defaultSecretTime;
+    private float secretTime;
     [SerializeField] private GameObject _restartButton;
     [SerializeField] private GameObject _quitButton;
 
@@ -40,6 +41,7 @@ public class GameController : MonoBehaviour
         #endregion
 
         Players = new List<PlayerController>(2);
+        secretTime = defaultSecretTime;
     }
 
     private void Start()
@@ -157,6 +159,7 @@ public class GameController : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
+        secretTime = defaultSecretTime;
         ps.StartSpawn();
         StartCoroutine(GameTimer());
     }

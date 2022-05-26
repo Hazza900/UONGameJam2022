@@ -32,6 +32,13 @@ public class PatternSpawner : MonoBehaviour
     [SerializeField]
     private float _spawnDelayDefault = 0.5f;
 
+    [SerializeField]
+    private float _spawnDelayChange = -0.01f;
+
+
+    [SerializeField]
+    private float _obstacleSpeedChange = 0.7f;
+
     private float _spawnDelay;
 
     private float _obstacleSpeedDiff = 0;
@@ -130,8 +137,8 @@ public class PatternSpawner : MonoBehaviour
                 yield return wait;
             }
 
-            _spawnDelay -= 0.01f;
-            _obstacleSpeedDiff += 0.6f;
+            _spawnDelay += _spawnDelayChange;
+            _obstacleSpeedDiff += _obstacleSpeedChange;
         }
     }
 
