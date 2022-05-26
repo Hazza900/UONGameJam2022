@@ -50,7 +50,7 @@ public partial class @MasterInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""91758241-c257-4b34-a56b-b0f9cf16e8d8"",
-                    ""path"": ""<XInputController>/leftShoulder"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
@@ -116,7 +116,7 @@ public partial class @MasterInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4410667d-e538-4a7e-be1d-bda13b9885d9"",
-                    ""path"": ""<XInputController>/dpad/right"",
+                    ""path"": ""<Gamepad>/dpad/right"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Controller"",
