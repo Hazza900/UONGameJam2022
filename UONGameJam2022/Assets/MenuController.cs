@@ -23,6 +23,7 @@ public class MenuController : MonoBehaviour
 
     public GameObject bluewins;
     public GameObject redwins;
+    public GameObject draw;
 
     public void RemoveConnectionScreen()
     {

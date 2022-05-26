@@ -81,6 +81,8 @@ public class PatternSpawner : MonoBehaviour
     public void StopSpawn()
     {
         StopCoroutine(crt);
+        _obstacleSpeedDiff = 0f;
+        _spawnDelay = 0.5f;
     }
 
     public void AdjustSpawnDelay(float value)
@@ -125,8 +127,8 @@ public class PatternSpawner : MonoBehaviour
                 yield return wait;
             }
 
-            _spawnDelay += 0.02f;
-            _obstacleSpeedDiff += 1f;
+            _spawnDelay -= 0.01f;
+            _obstacleSpeedDiff += 0.6f;
         }
     }
 

@@ -18,11 +18,16 @@ public class GameController : MonoBehaviour
     private bool hasStarted = false;
     private bool hasEnded = false;
 
+
+    private bool alreadySpawned = false;
+
     [SerializeField] public Transform[] bottomPlayer;
     [SerializeField] public Transform[] topPlayer;
 
     [SerializeField] private float gameLength;
     [SerializeField] private float secretTime;
+    [SerializeField] private GameObject _restartButton;
+    [SerializeField] private GameObject _quitButton;
 
     private void Awake()
     {
@@ -42,7 +47,7 @@ public class GameController : MonoBehaviour
         playerInputManager = GetComponent<PlayerInputManager>();
 
         StartCoroutine(GameLoad());
-        
+
     }
     public void onPlayerJoined(PlayerInput input)
     {
@@ -77,6 +82,31 @@ public class GameController : MonoBehaviour
         StartCoroutine(WaitingForPlayers());
     }
 
+    public void Restart()
+    {
+
+        hasStarted = false;
+        hasEnded = false;
+        Players[0].Score = 0;
+        Players[1].Score = 0;
+
+        mc.player1score.text = Players[0].Score.ToString();
+        mc.player2score.text = Players[1].Score.ToString();
+
+        mc.bluewins.SetActive(false);
+        mc.redwins.SetActive(false);
+        mc.draw.SetActive(false);
+
+        _restartButton.SetActive(false);
+        _quitButton.SetActive(false);
+
+        StartCoroutine(WaitingForPlayers());
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
     IEnumerator WaitingForPlayers()
     {
         while (Players.Count < 2)
@@ -88,6 +118,8 @@ public class GameController : MonoBehaviour
         mc.waitScreen.SetActive(false);
 
         Debug.Log("Displaying Names");
+        mc.player1.SetActive(true);
+        mc.player2.SetActive(true);
 
         mc.player1text.text = Players[0].GetComponent<PlayerInput>().devices[0].displayName.Substring(0, 4);
         mc.player2text.text = Players[1].GetComponent<PlayerInput>().devices[0].displayName.Substring(0, 4);
@@ -101,13 +133,27 @@ public class GameController : MonoBehaviour
     IEnumerator StartGame()
     {
         Debug.Log("Starting Game!");
+        if (!alreadySpawned)
+        {
+            Players[0].rails = bottomPlayer;
+            Players[0].InitPawn();
+            Players[1].rails = topPlayer;
+            Players[1].InitPawn();
 
-        Players[0].rails = bottomPlayer;
-        Players[0].InitPawn();
-        Players[1].rails = topPlayer;
-        Players[1].InitPawn();
+            Debug.Log("Players Spawned, Beginning Countdown...");
+            alreadySpawned = true;
 
-        Debug.Log("Players Spawned, Beginning Countdown...");
+        }
+        else
+        {
+            foreach (PlayerController player in Players)
+            {
+                player.GetComponent<PlayerInput>().ActivateInput();
+                player.transform.position = new Vector3(0, player.transform.position.y, player.transform.position.z);
+                player.immune = false;
+            }
+        }
+
 
         yield return new WaitForSeconds(1f);
 
@@ -147,7 +193,7 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(1);
         mc.finalTimerText.text = "";
 
-        for (int i=0; i<5; i++)
+        for (int i = 0; i < 5; i++)
         {
             yield return new WaitForSeconds(0.75f);
             mc.finalTimerText.text += ".";
@@ -162,12 +208,19 @@ public class GameController : MonoBehaviour
         {
             mc.bluewins.SetActive(true);
         }
+        else if (p1 == p2)
+        {
+            mc.draw.SetActive(true);
+        }
         else
         {
             mc.redwins.SetActive(true);
+
         }
 
         yield return new WaitForSeconds(5f);
         hasEnded = true;
+        _restartButton.SetActive(true);
+        _quitButton.SetActive(true);
     }
 }

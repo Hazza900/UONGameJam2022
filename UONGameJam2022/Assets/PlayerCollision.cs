@@ -7,6 +7,8 @@ public class PlayerCollision : MonoBehaviour
     private PlayerController controller;
     [SerializeField] private float iframetime;
 
+    [SerializeField] private AudioSource _audioSource;
+
     private void Start()
     {
         controller = transform.parent.GetComponent<PlayerController>();
@@ -17,6 +19,7 @@ public class PlayerCollision : MonoBehaviour
         if (controller.immune)
             return;
 
+        _audioSource.Play();
         if (controller.ID == 1)
         {
             GameController.instance.ScorePlayer(1);
