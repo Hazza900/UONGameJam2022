@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   railPositions: []
-  swapRailDuration: 0.2
+  swapRailDuration: 0.1
 --- !u!114 &734789012595402943
 MonoBehaviour:
   m_ObjectHideFlags: 0
